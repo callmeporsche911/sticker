@@ -10,7 +10,7 @@ DEFAULT_AVATAR_ID = "900000013"
 DEFAULT_BANNER_URL = "https://api.ffcommunity.site/assets/storage/images/StickerAccV2.png"
 AVATAR_POSITION = (64, 57)
 AVATAR_SIZE = 100
-FONT_PATH = os.path.join(os.path.dirname(__file__), "../font.ttf")
+FONT_PATH = os.path.join(os.path.dirname(__file__), "font.ttf")
 
 def load_image_from_url(url):
     try:
@@ -84,17 +84,3 @@ def generate_banner():
             guild_name = None
     except:
         return jsonify({"error": "Account Does Not Exist"}), 404
-
-    avatar_url = f"https://api.ffcommunity.site/assets/library/icon/pot/{avatar_id}.png"
-    sticker = create_sticker(avt_url=avatar_url, name=name, uid=uid, level=level, likes=likes, guild_name=guild_name)
-    if not sticker:
-        return jsonify({"error": "Failed to generate sticker"}), 500
-
-    output = BytesIO()
-    sticker.save(output, format="PNG")
-    output.seek(0)
-    return send_file(output, mimetype="image/png")
-
-# For Vercel
-def handler(environ, start_response):
-    return app(environ, start_response)
